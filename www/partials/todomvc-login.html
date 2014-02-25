@@ -1,0 +1,21 @@
+<section ng-controller="LoginCtrl">
+    <section class="box">
+        <h2>login</h2>
+        <form id="login-form" ng-submit="login()">
+            <input placeholder="username" ng-model="username" autofocus>
+            <input type="password" placeholder="password" ng-model="password">
+            <input type="submit" value="login">
+        </form>
+    </section>
+
+    <section class="box">
+        <h2>register</h2>
+        <form id="registration-form" ng-submit="register()">
+            <input placeholder="username" ng-model="username" autofocus>
+            <input placeholder="full name" ng-model="fullName" autofocus>
+            <input type="password" placeholder="password" ng-model="password">
+            <input type="password" placeholder="password confirmation" ng-model="passwordConfirmation">
+            <input type="submit" value="register">
+        </form>
+    </section>
+</section>

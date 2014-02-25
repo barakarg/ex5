@@ -8,48 +8,46 @@ var users = {};
 var todos = {};
 
 
-function getUserIdByUsername(username) {
-    for (var id in users) {
-        if (users[id].username == username) {
-            return id;
-        }
-    }
-}
-
-function getUserIdBySessionId(sessionId) {
-    for (var id in users) {
-        if (users[id].sessionId == sessionId) {
-            return id;
-        }
-    }
-}
-
 module.exports = {
     users: {
-        add: function (object) {
-            var id = uuid.v1();
-            users[id] = object;
+        register: function (object) {
+            if (object.username in users) throw "username taken";
+
+            // create user and session
+            var user = {
+                name: object.name,
+                username: object.username,
+                password: object.password,
+                sessionId: uuid.v1()
+            };
+            users[object.username] = user;
+
+            return user;
         },
 
         login: function (object) {
-            var user = users[getUserIdByUsername(object.username)];
-            if (typeof user == "undefined") return;
+            var user = users[object.username];
+            if (typeof user == "undefined") throw "invalid username";
 
             // check password
-            if (user.password !== object.password) return;
+            if (user.password !== object.password) throw "wrong password";
 
             // create session
             user.sessionId = uuid.v1();
-            return user.sessionId;
+            return user;
         },
 
         logout: function (sessionId) {
             // destroy session
-            users[getUserIdBySessionId(sessionId)].sessionId = null;
+            for (var username in users) {
+                if (users[username].sessionId == sessionId) {
+                    users[username].sessionId = null;
+                }
+            }
         },
 
-        remove: function (id) {
-            delete users[id];
+        remove: function (username) {
+            delete users[username];
         }
     },
 

@@ -49,8 +49,29 @@ app.delete('/item', function(req, res) {
     }
 });
 
+app.post('/register', function(req, res) {
+    try {
+        var user = data.users.register(req.body);
+        res.cookie('sessionId', user.sessionId).send('');
+    }
+});
+
+app.post('/login', function(req, res) {
+    try {
+        var user = data.users.login(req.body);
+        res.cookie('sessionId', user.sessionId).send('');
+    }
+});
+
+app.post('/logout', function(req, res) {
+    try {
+        var user = data.users.logout(req.cookie('sessionId'));
+        res.send(200);
+    }
+});
+
 app.get('/', function(req, res) {
-    res.status(301).set('Location', '/app').send('');
+    res.set('Location', '/app').send(301);
 });
 
 var s = app.listen(PORT).on('close', function () {
