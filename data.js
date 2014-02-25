@@ -54,5 +54,28 @@ module.exports = {
     },
 
     todos: {
+        list: function () {
+            return todos;
+        },
+
+        get: function (id) {
+            return todos[id];
+        },
+
+        create: function (object) {
+            var id = uuid.v1();
+            todos[id] = object;
+            return todos;
+        },
+
+        update: function (id, object) {
+            todos[id] = object;
+            return todos;
+        },
+
+        delete: function (id) {
+            delete todos[id];
+            return todos;
+        }
     }
 };
