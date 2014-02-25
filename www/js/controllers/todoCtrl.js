@@ -6,19 +6,19 @@
  * - exposes the model to the template and provides event handlers
  */
 todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStorage, filterFilter) {
-    var todos = $scope.todos = todoStorage.get();
+    $scope.todos = [];
+    todoStorage.query(function (items) {
+        $scope.todos = items;
+    });
 
     $scope.newTodo = '';
     $scope.editedTodo = null;
 
-    // watch for changes in the todos list and update counters and storage
-    $scope.$watch('todos', function (newValue, oldValue) {
-        $scope.remainingCount = filterFilter(todos, { completed: false }).length;
-        $scope.completedCount = todos.length - $scope.remainingCount;
+    // watch for changes in the todos list and update counters
+    $scope.$watch('todos', function () {
+        $scope.remainingCount = filterFilter($scope.todos, { completed: false }).length;
+        $scope.completedCount = $scope.todos.length - $scope.remainingCount;
         $scope.allChecked = !$scope.remainingCount;
-        if (newValue !== oldValue) { // This prevents unneeded calls to the server
-            todoStorage.put(todos);
-        }
     }, true);
 
     // Monitor the current route for changes and adjust the filter accordingly.
@@ -35,9 +35,11 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
         var newTodo = $scope.newTodo.trim();
         if (!newTodo.length) return;
 
-        todos.push({
+        todoStorage.add({
             title: newTodo,
             completed: false
+        }, function (item) {
+            $scope.todos.push(item);
         });
 
         $scope.newTodo = '';
@@ -52,38 +54,49 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
 
     // editing finished item handler
     $scope.doneEditing = function (todo) {
-        $scope.editedTodo = null;
-        $scope.editedTodoRevert = null;
         todo.title = todo.title.trim();
         if (!todo.title) {
             $scope.removeTodo(todo);
+        } else {
+            todoStorage.update(todo, function (item) {
+                todo = item;
+            });
         }
+
+        $scope.editedTodo = null;
+        $scope.editedTodoRevert = null;
     };
 
     // cancel editing item handler
     $scope.revertEditing = function (todo) {
-        todos[todos.indexOf(todo)] = $scope.editedTodoRevert;
-        $scope.editedTodo = null;
-        $scope.editedTodoRevert = null;
-        $scope.doneEditing($scope.editedTodoRevert);
+        //todos[todos.indexOf(todo)] = $scope.editedTodoRevert;
+        //$scope.doneEditing($scope.editedTodoRevert);
     };
 
     // remove item handler
     $scope.removeTodo = function (todo) {
-        todos.splice(todos.indexOf(todo), 1);
+        //todos.splice(todos.indexOf(todo), 1);
+        todoStorage.remove(todo, function (items) {
+            $scope.todos = items;
+        });
     };
 
     // remove completed items handler
     $scope.clearCompletedTodos = function () {
-        $scope.todos = todos = todos.filter(function (val) {
+        todoStorage.filter(function (val) {
             return !val.completed;
+        }, function (items) {
+            $scope.todos = items;
         });
     };
 
     // check all items handler
     $scope.markAll = function (completed) {
-        todos.forEach(function (todo) {
+        $scope.todos.forEach(function (todo) {
             todo.completed = !completed;
+            todoStorage.update(todo, function (item) {
+                todo = item;
+            });
         });
     };
 });

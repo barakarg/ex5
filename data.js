@@ -2,7 +2,7 @@
  * Data model.
  */
 
-var uuid = require('./lib/node-uuid');
+var uuid = require('./lib/uuid');
 
 var users = {};
 var todos = {};
