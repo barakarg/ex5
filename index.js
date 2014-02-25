@@ -2,7 +2,7 @@
  * Main server file.
  */
 
-var util = require('util');
+var data = require('./data');
 var miniExpress = require('./miniExpress');
 var app = miniExpress();
 
