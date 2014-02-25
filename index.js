@@ -21,31 +21,31 @@ app.get('/item', function(req, res) {
 
 app.post('/item', function(req, res) {
     try {
-        var item = data.todos.create(req.body);
-        res.json(item);
+        data.todos.create(req.body);
+        res.json({status: 0});
     }
     catch (err) {
-        res.status(500).send(err);
+        res.status(500).json({status: 1, msg: err});
     }
 });
 
 app.put('/item', function(req, res) {
     try {
-        var item = data.todos.update(req.body);
-        res.json(item);
+        data.todos.update(req.body);
+        res.json({status: 0});
     }
     catch (err) {
-        res.status(500).send(err);
+        res.status(500).json({status: 1, msg: err});
     }
 });
 
 app.delete('/item', function(req, res) {
     try {
-        var items = data.todos.delete(req.body);
-        res.json(items);
+        data.todos.delete(req.body);
+        res.json({status: 0});
     }
     catch (err) {
-        res.status(500).send(err);
+        res.status(500).json({status: 1, msg: err});
     }
 });
 

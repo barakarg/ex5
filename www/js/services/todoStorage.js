@@ -5,37 +5,53 @@
  */
 todomvc.factory('todoStorage', ['$http', function ($http) {
     return {
-        query: function (callback) {
+        query: function (successHandler, errorHandler) {
             console.log('-- query');
-            $http.get('/item').success(function(items) {
-                if (callback) callback(items);
-            });
+            $http.get('/item')
+                .success(function (items) {
+                    if (successHandler) successHandler(items);
+                })
+                .error(function () {
+                    if (errorHandler) errorHandler();
+                });
         },
 
-        create: function (object, callback) {
+        create: function (object, successHandler, errorHandler) {
             console.log('-- create');
-            $http.post('/item', object).success(function(item) {
-                if (callback) callback(item);
-            });
+            $http.post('/item', object)
+                .success(function () {
+                    if (successHandler) successHandler();
+                })
+                .error(function () {
+                    if (errorHandler) errorHandler();
+                });
         },
 
-        update: function (object, callback) {
+        update: function (object, successHandler, errorHandler) {
             console.log('-- update');
-            $http.put('/item', object).success(function(item) {
-                if (callback) callback(item);
-            });
+            $http.put('/item', object)
+                .success(function () {
+                    if (successHandler) successHandler();
+                })
+                .error(function () {
+                    if (errorHandler) errorHandler();
+                });
         },
 
-        remove: function (object, callback) {
+        remove: function (object, successHandler, errorHandler) {
             console.log('-- remove');
             $http.delete('/item', {
                 data: object,
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            }).success(function(items) {
-                if (callback) callback(items);
-            });
+            })
+                .success(function () {
+                    if (successHandler) successHandler();
+                })
+                .error(function () {
+                    if (errorHandler) errorHandler();
+                });
         }
     };
 }]);

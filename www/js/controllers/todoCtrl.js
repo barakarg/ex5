@@ -7,8 +7,15 @@
  */
 todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStorage, filterFilter) {
     $scope.todos = [];
+    $scope.nextId = 1;
     todoStorage.query(function (items) {
         $scope.todos = items;
+        // keep nextId valid
+        for (var i in items) {
+            if (items[i].id >= $scope.nextId) {
+                $scope.nextId = items[i].id+1;
+            }
+        }
     });
 
     $scope.newTodo = '';
@@ -32,18 +39,20 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
 
     // add new item handler
     $scope.addTodo = function () {
-        var newTodo = $scope.newTodo.trim();
-        if (!newTodo.length) return;
-
-        todoStorage.create({
-            title: newTodo,
+        var item = {
+            id: $scope.nextId,
+            title: $scope.newTodo.trim(),
             completed: false
-        }, function (item) {
-            console.log('**', $scope.todos);
+        };
+
+        if (!item.title.length) return; // ignore empty todos
+
+        todoStorage.create(item, function () {
             $scope.todos.push(item);
         });
 
         $scope.newTodo = '';
+        $scope.nextId++;
     };
 
     // edit item handler
@@ -58,36 +67,47 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
         if (todo == null) return;
 
         todo.title = todo.title.trim();
-        todo.completed = !todo.completed;
         if (!todo.title) {
             $scope.removeTodo(todo);
         } else {
-            todoStorage.update(todo, function (item) {
-                todo = item;
+            todoStorage.update(todo, function () {
+                // on success - update
+                $scope.todos[$scope.todos.indexOf(todo)] = todo;
+            }, function () {
+                // on fail - revert
+                $scope.revertEditing(todo);
             });
         }
 
         $scope.editedTodo = null;
-        $scope.editedTodoRevert = null;
     };
 
     // cancel editing item handler
     $scope.revertEditing = function (todo) {
-        //todos[todos.indexOf(todo)] = $scope.editedTodoRevert;
-        //$scope.doneEditing($scope.editedTodoRevert);
+        $scope.todos[$scope.todos.indexOf(todo)] = $scope.editedTodoRevert;
     };
+
+    // completion change handler
+    $scope.changeCompleted = function (todo) {
+        todo.completed = !todo.completed;
+        $scope.doneEditing(todo);
+    },
 
     // remove item handler
     $scope.removeTodo = function (todo) {
-        todoStorage.remove(todo, function (items) {
-            $scope.todos = items;
+        todoStorage.remove(todo, function () {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
         });
     };
 
     // remove completed items handler
     $scope.clearCompletedTodos = function () {
-        todoStorage.remove({id: -1}, function (items) {
-            $scope.todos = items;
+        todoStorage.remove({id: -1}, function () {
+            for (var i in $scope.todos) {
+                if ($scope.todos[i].completed) {
+                    $scope.todos.splice(i, 1);
+                }
+            }
         });
     };
 
@@ -95,8 +115,9 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
     $scope.markAll = function (completed) {
         $scope.todos.forEach(function (todo) {
             todo.completed = !completed;
-            todoStorage.update(todo, function (item) {
-                todo = item;
+            todoStorage.update(todo, null, function () {
+                // on failure - revert
+                todo.completed = !todo.completed;
             });
         });
     };
