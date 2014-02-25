@@ -23,3 +23,4 @@ the exercise:
 CHANGES TO EX4
 ==============
 * added 'image/png' content type
+* removed skipping body parsing when method is DELETE (miniExpress.js line 253)

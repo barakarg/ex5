@@ -35,10 +35,11 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
         var newTodo = $scope.newTodo.trim();
         if (!newTodo.length) return;
 
-        todoStorage.add({
+        todoStorage.create({
             title: newTodo,
             completed: false
         }, function (item) {
+            console.log('**', $scope.todos);
             $scope.todos.push(item);
         });
 
@@ -54,7 +55,10 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
 
     // editing finished item handler
     $scope.doneEditing = function (todo) {
+        if (todo == null) return;
+
         todo.title = todo.title.trim();
+        todo.completed = !todo.completed;
         if (!todo.title) {
             $scope.removeTodo(todo);
         } else {
@@ -75,7 +79,6 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
 
     // remove item handler
     $scope.removeTodo = function (todo) {
-        //todos.splice(todos.indexOf(todo), 1);
         todoStorage.remove(todo, function (items) {
             $scope.todos = items;
         });
@@ -83,9 +86,7 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
 
     // remove completed items handler
     $scope.clearCompletedTodos = function () {
-        todoStorage.filter(function (val) {
-            return !val.completed;
-        }, function (items) {
+        todoStorage.remove({id: -1}, function (items) {
             $scope.todos = items;
         });
     };

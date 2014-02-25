@@ -250,7 +250,7 @@ module.exports.bodyParser = bodyParserMiddleware;
 
 function bodyParserMiddleware() {
     return function (req, res, next) {
-        if (req.method == 'GET' || req.method == 'DELETE') return next(); // body has no meaning
+        if (req.method == 'GET') return next(); // body has no meaning
 
         var data = '';
         req.on('data', function (chunk) {

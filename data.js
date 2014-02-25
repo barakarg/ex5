@@ -7,6 +7,7 @@ var uuid = require('./lib/uuid');
 var users = {};
 var todos = {};
 
+var nextId = 1;
 
 function getUserIdByUsername(username) {
     for (var id in users) {
@@ -55,27 +56,49 @@ module.exports = {
 
     todos: {
         list: function () {
-            return todos;
+            console.log('- list');
+            var values = [];
+            for (var id in todos) {
+                values.push(todos[id]);
+            }
+            return values;
         },
 
         get: function (id) {
+            console.log('- get', id);
             return todos[id];
         },
 
         create: function (object) {
-            var id = uuid.v1();
+            console.log('- create', object);
+            var id = nextId++;
+            object.id = id;
             todos[id] = object;
-            return todos;
+            return todos[id];
         },
 
-        update: function (id, object) {
-            todos[id] = object;
-            return todos;
+        update: function (object) {
+            console.log('- update', object);
+            if (!(object.id in todos)) throw "invalid id";
+            todos[object.id] = object;
+            return todos[object.id];
         },
 
-        delete: function (id) {
-            delete todos[id];
-            return todos;
+        delete: function (object) {
+            console.log('- delete', object);
+            if (object.id != -1 && !(object.id in todos)) throw "invalid id";
+
+            if (object.id == -1) {
+                for (var id in todos) {
+                    if (todos[id].completed) {
+                        delete todos[id];
+                    }
+                }
+            }
+            else {
+                delete todos[object.id];
+            }
+            return this.list();
         }
     }
 };

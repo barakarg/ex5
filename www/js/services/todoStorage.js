@@ -3,48 +3,39 @@
 /**
  * Services that persists and retrieves TODOs from localStorage
  */
-todomvc.factory('todoStorage', ['$resource', function ($resource) {
-    var TodoItem = $resource('/api/item/:itemId', // user/:userId/
-        {itemId:'@id'}, { // userId:123,
-            charge: {method:'POST', params: {charge: true}}
-        });
-
+todomvc.factory('todoStorage', ['$http', function ($http) {
     return {
         query: function (callback) {
             console.log('-- query');
-            var items = TodoItem.query(function () {
+            $http.get('/item').success(function(items) {
                 if (callback) callback(items);
             });
         },
 
-        add: function (object, callback) {
-            console.log('-- add');
-            if (callback) callback(object);
+        create: function (object, callback) {
+            console.log('-- create');
+            $http.post('/item', object).success(function(item) {
+                if (callback) callback(item);
+            });
         },
 
         update: function (object, callback) {
             console.log('-- update');
-            if (callback) callback(object);
+            $http.put('/item', object).success(function(item) {
+                if (callback) callback(item);
+            });
         },
 
         remove: function (object, callback) {
             console.log('-- remove');
-            this.query(callback);
-        },
-
-        filter: function (filter, callback) {
-            console.log('-- filter');
-            this.query(callback);
-        },
-
-        get: function () {
-            $http.get('phones/phones.json').success(function(data) {
-                $scope.phones = data;
+            $http.delete('/item', {
+                data: object,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).success(function(items) {
+                if (callback) callback(items);
             });
-        },
-
-        put: function (todos) {
-            localStorage.setItem(STORAGE_ID, JSON.stringify(todos));
         }
     };
 }]);

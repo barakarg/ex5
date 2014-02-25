@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>AngularJS • TodoMVC</title>
-        <link rel="stylesheet" href="bower_components/todomvc-common/base.css">
+        <link rel="stylesheet" href="app/bower_components/todomvc-common/base.css">
         <!-- prevent showing raw templates before app load -->
         <style>[ng-cloak] { display: none; }</style>
     </head>
@@ -12,17 +12,17 @@
         <div ng-view></div>
 
         <!-- load visual aids: templating framework, etc. -->
-        <script src="bower_components/todomvc-common/base.js"></script>
+        <script src="app/bower_components/todomvc-common/base.js"></script>
         <!-- load angular -->
-        <script src="bower_components/angular.js"></script>
-        <script src="bower_components/angular-route.js"></script>
-        <script src="bower_components/angular-resource.js"></script>
+        <script src="app/bower_components/angular.js"></script>
+        <script src="app/bower_components/angular-route.js"></script>
+        <script src="app/bower_components/angular-resource.js"></script>
         <!-- load application -->
-        <script src="js/app.js"></script>
-        <script src="js/controllers/todoCtrl.js"></script>
-        <script src="js/services/todoStorage.js"></script>
+        <script src="app/js/app.js"></script>
+        <script src="app/js/controllers/todoCtrl.js"></script>
+        <script src="app/js/services/todoStorage.js"></script>
         <!-- load a few gentle UI improvements -->
-        <script src="js/directives/todoFocus.js"></script>
-        <script src="js/directives/todoEscape.js"></script>
+        <script src="app/js/directives/todoFocus.js"></script>
+        <script src="app/js/directives/todoEscape.js"></script>
     </body>
 </html>
