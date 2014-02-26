@@ -6,7 +6,7 @@ var data = require('./data');
 var miniExpress = require('./miniExpress');
 var app = miniExpress();
 
-var PORT = 3005;
+var PORT = process.env.PORT || 3005;
 
 app.use(miniExpress.cookieParser());
 app.use(miniExpress.bodyParser());
