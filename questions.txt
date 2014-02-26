@@ -1,0 +1,5 @@
+can your app suffer from XSS? if yes how can you fix it? if not why not?
+TODO
+
+can your app suffer from CSRF? if yes how can you fix it? if not why not?
+TODO

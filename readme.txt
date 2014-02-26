@@ -1,9 +1,3 @@
-what was hard?
-understanding where to put every part of the server (HttpRequest, HttpResponse, middlewares, etc.)
-
-what was fun?
-all of it.
-
 
 
 Changes from TodoMVC AngularJS template

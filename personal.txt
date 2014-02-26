@@ -1,0 +1,8 @@
+what was hard?
+understanding the angularJS concept, moving from localstorage to server persistence
+
+what was fun?
+all of it.
+
+about the course
+the course is AHLA, it gives you the understanding of what going on under the hood.
