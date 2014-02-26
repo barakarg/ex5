@@ -1,0 +1,2 @@
+* added 'image/png' content type to support background
+* removed skipping body parsing when method is DELETE (miniExpress.js line 253) to support ex5 description
