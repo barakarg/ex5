@@ -10,15 +10,15 @@ var todomvc = angular.module('todomvc', ['ngRoute', 'ngCookies'])
         $routeProvider
             .when('/login', {
                 controller: 'LoginCtrl',
-                templateUrl: 'app/partials/todomvc-login.html'
+                templateUrl: 'partials/todomvc-login.html'
             })
             .when('/', {
                 controller: 'TodoCtrl',
-                templateUrl: 'app/partials/todomvc-index.html'
+                templateUrl: 'partials/todomvc-index.html'
             })
             .when('/:status', {
                 controller: 'TodoCtrl',
-                templateUrl: 'app/partials/todomvc-index.html'
+                templateUrl: 'partials/todomvc-index.html'
             })
             .otherwise({
                 redirectTo: '/'

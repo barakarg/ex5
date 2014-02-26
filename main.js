@@ -3,7 +3,7 @@
  */
 
 var data = require('./data');
-var miniExpress = require('./miniExpress');
+var miniExpress = require('express');
 var app = miniExpress();
 
 var PORT = process.env.PORT || 3005;
