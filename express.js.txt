@@ -1,0 +1,4 @@
+in order to make it work I had to remove all the /app prefixes when referencing
+static sources (js, css, partials).
+
+the diff can be seen in commits of branch 'express'.
