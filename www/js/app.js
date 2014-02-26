@@ -5,7 +5,7 @@
  *
  * @type {angular.Module}
  */
-var todomvc = angular.module('todomvc', ['ngRoute'])
+var todomvc = angular.module('todomvc', ['ngRoute', 'ngCookies'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/login', {

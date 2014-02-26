@@ -5,7 +5,12 @@
  * - retrieves and persists the model via the todoStorage service
  * - exposes the model to the template and provides event handlers
  */
-todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStorage, filterFilter) {
+todomvc.controller('TodoCtrl', function TodoCtrl($scope, $route, $routeParams, $cookies, $http, $location, todoStorage, filterFilter) {
+    // if not authenticated - redirect to login
+    if (!$cookies.sessionId) {
+        $location.url('/login');
+    }
+
     $scope.todos = [];
     $scope.nextId = 1;
     todoStorage.query(function (items) {
@@ -120,5 +125,14 @@ todomvc.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, todoStora
                 todo.completed = !todo.completed;
             });
         });
+    };
+
+    $scope.logout = function () {
+        delete $cookies.sessionId;
+        $route.reload();
+//        $http.post('/logout')
+//            .success(function () {
+//                $location.url('/');
+//            });
     };
 });

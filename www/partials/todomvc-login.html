@@ -1,21 +1,22 @@
 <section ng-controller="LoginCtrl">
+    <p class="error">{{error}}</p>
     <section class="box">
         <h2>login</h2>
-        <form id="login-form" ng-submit="login()">
+        <form id="login-form" ng-submit="login(username, password)">
             <input placeholder="username" ng-model="username" autofocus>
             <input type="password" placeholder="password" ng-model="password">
-            <input type="submit" value="login">
+            <input type="submit" value="login" ng-click="login(username, password)">
         </form>
     </section>
 
     <section class="box">
         <h2>register</h2>
-        <form id="registration-form" ng-submit="register()">
+        <form id="registration-form" ng-submit="register(username, fullName, password, passwordConfirmation)">
             <input placeholder="username" ng-model="username" autofocus>
             <input placeholder="full name" ng-model="fullName" autofocus>
             <input type="password" placeholder="password" ng-model="password">
             <input type="password" placeholder="password confirmation" ng-model="passwordConfirmation">
-            <input type="submit" value="register">
+            <input type="submit" value="register" ng-click="register(username, fullName, password, passwordConfirmation)">
         </form>
     </section>
 </section>

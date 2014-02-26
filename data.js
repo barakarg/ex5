@@ -11,8 +11,12 @@ var todos = {};
 module.exports = {
     users: {
         register: function (object) {
+            if (object.username == '') throw "username can't be empty";
+            if (object.fullName == '') throw "full name can't be empty";
+            if (object.password == '') throw "password can't be empty";
+            if (object.password != object.passwordConfirmation) throw "password confirmation fail";
             if (object.username in users) throw "username taken";
-
+            console.log(object);
             // create user and session
             var user = {
                 name: object.name,

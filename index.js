@@ -11,8 +11,6 @@ var PORT = 3005;
 app.use(miniExpress.cookieParser());
 app.use(miniExpress.bodyParser());
 
-app.use(function(req, res, next) { console.log('middleware:', req.url); next(); });
-
 app.use('/app', miniExpress.static(__dirname + '/www/'));
 
 app.get('/item', function(req, res) {
@@ -54,6 +52,9 @@ app.post('/register', function(req, res) {
         var user = data.users.register(req.body);
         res.cookie('sessionId', user.sessionId).send('');
     }
+    catch (err) {
+        res.status(500).json({msg: err});
+    }
 });
 
 app.post('/login', function(req, res) {
@@ -61,12 +62,20 @@ app.post('/login', function(req, res) {
         var user = data.users.login(req.body);
         res.cookie('sessionId', user.sessionId).send('');
     }
+    catch (err) {
+        res.status(500).json({msg: err});
+    }
 });
 
 app.post('/logout', function(req, res) {
     try {
-        var user = data.users.logout(req.cookie('sessionId'));
-        res.send(200);
+        console.log('cookie', req.cookie('sessionId'));
+        data.users.logout(req.cookie('sessionId'));
+        res.cookie('sessionId', '').send(200);
+    }
+    catch (err) {
+        console.log('cool', req.cookie('sessionId'));
+        res.status(500).json({msg: err});
     }
 });
 

@@ -43,3 +43,9 @@ h2 {
     -o-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
 }
+
+.error {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
