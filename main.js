@@ -67,18 +67,6 @@ app.post('/login', function(req, res) {
     }
 });
 
-app.post('/logout', function(req, res) {
-    try {
-        console.log('cookie', req.cookie('sessionId'));
-        data.users.logout(req.cookie('sessionId'));
-        res.cookie('sessionId', '').send(200);
-    }
-    catch (err) {
-        console.log('cool', req.cookie('sessionId'));
-        res.status(500).json({msg: err});
-    }
-});
-
 app.get('/', function(req, res) {
     res.set('Location', '/app').send(301);
 });

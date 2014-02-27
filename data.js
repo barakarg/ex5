@@ -39,19 +39,6 @@ module.exports = {
             // create session
             user.sessionId = uuid.v1();
             return user;
-        },
-
-        logout: function (sessionId) {
-            // destroy session
-            for (var username in users) {
-                if (users[username].sessionId == sessionId) {
-                    users[username].sessionId = null;
-                }
-            }
-        },
-
-        remove: function (username) {
-            delete users[username];
         }
     },
 

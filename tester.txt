@@ -1,0 +1,26 @@
+TESTS DESCRIPTION:
+
+get /item           - list items
+- first time make sure result is empty list
+- second time (after create) make sure result includes the created item
+
+post /item          - create item
+- create an item
+- check existance by listing items
+
+put /item           - update item
+- update an item
+- check correct values by listing items
+
+delete /item        - delete item
+- delete an item
+- check absence by listing items
+
+
+post /register      - register new user
+- register a user
+- check by getting 'Set-Cookie' header in response
+
+post /login         - log user in
+- log user in
+- check by getting 'Set-Cookie' header in response

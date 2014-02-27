@@ -1,5 +1,12 @@
 can your app suffer from XSS? if yes how can you fix it? if not why not?
-TODO
+
+No. The only place that I'm rendering user content is in the todo field and
+it's not rendered by angular as html, only as text (no further processing
+is done on the input by the server). so you can put any string inside and its ok.
+
 
 can your app suffer from CSRF? if yes how can you fix it? if not why not?
-TODO
+
+Yes. I can fix it by embedding csrf token, created by the server, to each page html.
+Then, each API request should include that token as a parameter so the server will
+know that the client that sent the API request is in his application.
